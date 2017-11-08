@@ -1,0 +1,3 @@
+[submodule "notes-ui"]
+	path = notes-ui
+	url = git@github.com:mattlevan/notes-ui
