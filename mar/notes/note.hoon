@@ -4,10 +4,27 @@
   ::
 /-  notes-note
 !:
-|_  notes-note
+|_  note=notes-note
 ++  grab
   |%
-  ++  noun
-    notes-note
+  +=  noun  notes-note
+  ++  json
+    |=  jon=^json
+    ^-  notes-note
+    %-  need
+    %.  jon
+    =>  dejs-soft:format
+    (ot tim+di aut+(su fed:ag) tit+so bod+(cu to-wain:format so) ~)
+  --
+::
+++  grow
+  |%
+  ++  json
+    %-  pairs:enjs:format
+      :~  [%tim (time:enjs:format tim.note)]
+          [%aut (ship:enjs:format aut.note)]
+          [%tit (tape:enjs:format tit.note)]
+          [%bod (wall:enjs:format bod.note)]
+      ==
   --
 --

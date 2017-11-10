@@ -2,97 +2,79 @@
 ::
 ::::  /===/app/notes/hoon
   ::
-/-  notes-note, notes-send
-[. notes-note notes-send]
+/-  notes-note
+=,  notes-note
 ::
 !:
 |%
-++  move  {bone card}
-++  card  $%  {$poke path dock poke-contents}
-              {$diff diff-contents}
++=  move  [bone card]
++=  card  $%  [%poke path dock poke-contents]
+              [%diff diff-contents]
           ==
-++  poke-contents  $%  {$notes-note notes-note}
++=  poke-contents  $%  [%notes-note notes-note]
                    ==
-++  diff-contents  $%  {$json json}
++=  diff-contents  $%  [%json json]
                    ==
 --
 ::
-|_  $:  bow/bowl:gall
-        sen/(list notes-note)                         ::<  sent messages
-        rec/(list notes-note)                         ::<  received messages
+|_  $:  bow=bowl:gall
+        notes=(list notes-note)
     ==
 ::
 ++  prep  _`.
 ::
 ++  peer
-  |=  pax/path
-  ^-  {(list move) _+>.$}
-  =/  ordered-notes/(list notes-note)
+  |=  pax=path
+  ^-  [(list move) _+>.$]
+  =/  nord=(list notes-note)
     %+  sort
-      rec
-    |=  {a/notes-note b/notes-note}
+      notes
+    |=  [a=notes-note b=notes-note]
     (gth tim.a tim.b)
   :_  +>.$
   :_  ~
   :^  ost.bow  %diff  %json
-  (inbox-to-json ordered-notes)
+  (notes-to-json nord)
 ::
-++  inbox-to-json
-  |=  box/(list notes-note)
+++  notes-to-json
+  |=  tome=(list notes-note)
   ^-  json
   :-  %a
-  %+  turn  box
-  |=  a/notes-note
+  %+  turn  tome
+  |=  a=notes-note
   %-  pairs:enjs:format
   :~  tim+(time:enjs:format tim.a)
       aut+s+(scot %p aut.a)
       tit+s+tit.a
       bod+s+(of-wain:format bod.a)
   ==
-::++  poke-notes-send
-::  |=  sen/notes-send                                     ::<  to, subject, body
-::  ^-  {(list move) _+>.$}
-::  =/  out/notes-note
-::    [now.bow our.bow to.sen sub.sen bod.sen]
-::  =.  ^sen
-::    [out ^sen]
-::  ~&  mail+sending+'Sending message!'
-::  :_  +>.$
-::  :~  :*  ost.bow
-::          %poke
-::          /
-::          [[to.out %mail] %notes-note out]
-::      ==
-::  ==
-::++  poke-notes-note
-::  |=  mes/notes-note
-::  ?>  =(to.mes our.bow)
-::  ~&  mail+received+'New message!'
-::  ~&  mail+time+tim.mes
-::  ~&  mail+from+fom.mes
-::  ~&  mail+to+to.mes
-::  ~&  mail+sub+sub.mes
-::  ~&  mail+bod+bod.mes
-::  =.  rec
-::    [mes rec]
-::  =/  ord/(list notes-note)                           ::<  ordered messages
-::    %+  sort
-::      rec
-::    |=  {a/notes-note b/notes-note}
-::    (gth tim.a tim.b)
-::  :_  +>.$
-::  %+  turn  (~(tap by sup.bow))
-::  |=  {o/bone *}
-::  [o %diff %json `json`(inbox-to-json ord)]
-:: ::
-::++  coup
-::  |=  {wir/wire err/(unit tang)}
-::  ^-  {(list move) _+>.$}
-::  ?~  err
-::    ~&  mail+success+'Message sent!'
-::    [~ +>.$]
-::  ~&  mail+error+'Message failed to send. Error:'
-::  ~&  mail+error+err
-::  [~ +>.$]
+++  poke-notes-note                                     ::  XX add clay ops
+  |=  n=notes-note
+  ?>  =(aut.n our.bow)                                  ::  assert we are aut
+  ~&  notes+received+'new (or updated) note!'           ::  printfs
+  ~&  notes+time+tim.n
+  ~&  notes+author+aut.n
+  ~&  notes+title+tit.n
+  ~&  notes+body+bod.n
+  =.  notes                                             ::  update subject
+    [n notes]
+  =/  nord=(list notes-note)                            
+    %+  sort
+      notes
+    |=  [a=notes-note b=notes-note]
+    (gth tim.a tim.b)
+  :_  +>.$
+  %+  turn  ~(tap by sup.bow)
+  |=  [o=bone *]
+  [o %diff %json `json`(notes-to-json nord)]
 ::
+++  coup
+  |=  [wir=wire err=(unit tang)]
+  ^-  [(list move) _+>.$]
+  ?~  err
+    ~&  notes+success+'note sent!'
+    [~ +>.$]
+  ~&  notes+error+'note failed to send. error:'
+  ~&  notes+error+err
+  [~ +>.$]
 --

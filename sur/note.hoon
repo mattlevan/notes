@@ -1,1 +1,1 @@
-{tim/time aut/ship tit/cord bod/wain}
+[tim=time aut=ship tit=cord bod=wain]
