@@ -49,15 +49,15 @@
       bod+s+(of-wain:format bod.a)
   ==
 ++  poke-notes-note                                     ::  XX add clay ops
-  |=  n=notes-note
-  ?>  =(aut.n our.bow)                                  ::  assert we are aut
+  |=  note=notes-note
+  ?>  =(aut.note our.bow)                                  ::  assert we are aut
   ~&  notes+received+'new (or updated) note!'           ::  printfs
-  ~&  notes+time+tim.n
-  ~&  notes+author+aut.n
-  ~&  notes+title+tit.n
-  ~&  notes+body+bod.n
+  ~&  notes+time+tim.note
+  ~&  notes+author+aut.note
+  ~&  notes+title+tit.note
+  ~&  notes+body+bod.note
   =.  notes                                             ::  update subject
-    [n notes]
+    [note notes]
   =/  nord=(list notes-note)                            
     %+  sort
       notes
